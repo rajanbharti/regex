@@ -1,18 +1,19 @@
 import java.util
-
 import scala.collection.mutable
 
+
 class RegexParser {
+  //to store operations :'*','|' and '+'
   private val opStack = new mutable.Stack[Char]
+  //to store characters
   private val chStack = new mutable.Stack[Char]
+  //to maintain list of all possible of states
   private val stateList = new util.ArrayList[State]
-  private val transtitionList = new util.ArrayList[Transition]
   var stateIndex = 0
   val state = new State(stateIndex)
 
-
+  //Parses regular expression to create a state machine
   def evaluateRegex(regex: String) = {
-
     if (regex.length() > 1) {
       for (i <- 0 until regex.length()) {
         val ch = regex.charAt(i)
@@ -38,7 +39,6 @@ class RegexParser {
           opEval(initial)
         }
       }
-
     } else {
       val ch = regex.charAt(0)
       val t = new Transition(ch, 1)
@@ -51,8 +51,10 @@ class RegexParser {
       stateList.add(initial)
       stateList.add(s1)
     }
+  }
 
-
+  def getStateList: util.ArrayList[State] = {
+    stateList
   }
 
   private def opEval(initialState: State) {
@@ -126,7 +128,6 @@ class RegexParser {
 
 
   }
-
 
   private def isOperator(ch: Char): Boolean = {
     ch == '*' || ch == '|'
